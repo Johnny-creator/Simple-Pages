@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap");
+
+main {
+  padding-top: 20px;
+  font-family: "Outfit", sans-serif;
+}
+
+.animate {
+  animation-name: fadein;
+  animation-duration: 3s;
+}
+
+h1 {
+  text-align: center;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+p {
+  text-align: center;
+}
+
+.container {
+  padding-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.box {
+  flex-basis: 100%;
+  padding: 30px;
+  text-align: center;
+}
+
+.box button {
+  height: 30px;
+  width: 180px;
+  font-size: 20px;
+}
+
+@media only screen and (min-width: 615px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .box {
+    flex-basis: 33.333333%;
+  }
+
+  h1 {
+    font-size: 80px;
+  }
+
+  p {
+    font-size: 25px;
+  }
+
+  .box button {
+    height: 40px;
+    width: 200px;
+    font-size: 20px;
+  }
+}

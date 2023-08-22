@@ -1,0 +1,40 @@
+.light {
+  background-color: #eee;
+  color: black;
+  transition: 0.5s;
+}
+
+.light input:hover {
+  background-color: lightblue;
+}
+
+.light button {
+    color: black;
+    transition: 0.5s;
+}
+
+.light button:hover {
+  color:white;
+  background-color: #333;
+}
+
+.dark {
+  background-color: #333;
+  color: white;
+  transition: 0.5s;
+}
+
+.dark input:hover {
+  background-color: lightblue;
+}
+
+.dark button {
+    background-color: transparent;
+    color: white;
+    transition: 0.5s;
+}
+
+.dark button:hover {
+    color:black;
+    background-color: aliceblue;
+}

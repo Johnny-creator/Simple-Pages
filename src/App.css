@@ -1,0 +1,18 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background-color: var(--backgroundColour);
+  color: var(--textColour);
+}
+
+main {
+  min-height: 100vh;
+}
