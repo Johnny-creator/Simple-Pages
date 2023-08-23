@@ -4,6 +4,7 @@ header {
   background-color: #222f3e;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 5px 20px;
   color: #73a5f5;
   margin: 0 auto;
@@ -27,9 +28,15 @@ header a:hover {
 }
 
 .userLinks {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   text-align: right;
 }
 
 .userLinks a {
   padding: 0.5em;
+  padding-bottom: 0px;
 }
