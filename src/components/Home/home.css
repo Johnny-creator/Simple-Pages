@@ -61,6 +61,10 @@ p {
     flex-basis: 33.333333%;
   }
 
+  .box a {
+    cursor: default;
+  }
+
   h1 {
     font-size: 80px;
   }

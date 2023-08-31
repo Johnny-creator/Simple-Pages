@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Input from "../Form/Input";
+import Input from "../Input/Input";
 import Button from "../UI/Button";
 
 import "./login.css";
