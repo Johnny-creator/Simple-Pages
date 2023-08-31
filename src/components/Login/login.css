@@ -1,0 +1,8 @@
+form a {
+    color: #73a5f5;
+    transition: 0.3s;
+}
+
+form a:hover {
+    color: white;
+}
