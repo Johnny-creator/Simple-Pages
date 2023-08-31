@@ -1,16 +1,17 @@
 import React from "react";
 import "./header.css";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const Header = (props) => {
   return (
     <header>
-      <a href="/">
+      <Link to="/">
         <h1>Simple Site Maker </h1>
-      </a>
+      </Link>
       <div className="userLinks">
-        <a href="/"> Login </a>
-        <a href="/"> Register </a>
+        <Link to="/login"> Login </Link>
+        <Link to="/register"> Register </Link>
         <Button onClick={props.onClick} type="button"> Light/Dark Toggle </Button>
       </div>
     </header>
