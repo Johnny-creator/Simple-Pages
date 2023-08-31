@@ -15,13 +15,29 @@ form button {
   height: 30px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form a {
+  color: #73a5f5;
+  transition: 0.3s;
+}
+
+form a:hover {
+  color: white;
+}
+
 .registerHeader {
   font-size: 50px;
 }
 
 @media only screen and (min-width: 615px) {
-    form input, form button {
-        width: 40%;
-        margin: 10px;
-    }
+  form input,
+  form button {
+    width: 20%;
+    margin: 10px;
+  }
 }
