@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/UI/Header";
 import Home from "./components/Home/Home";
 import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
 import Footer from "./components/UI/Footer";
 import Error from "./components/UI/Error";
 
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="*" element={<Error />} />
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Footer style={localStorage.getItem("Theme")} />
       </div>
