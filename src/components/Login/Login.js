@@ -7,19 +7,54 @@ import "./login.css";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
+  const [userNameIsTouched, setUserNameIsTouched] = useState(false);
+  const enteredUserNameIsValid = userName.trim() !== "";
+  const enteredUserNameIsInvalid = !enteredUserNameIsValid && userNameIsTouched;
+
   const [password, setPassword] = useState("");
+  const [passwordIsTouched, setPasswordIsTouched] = useState(false);
+  const enteredPasswordIsValid = password.trim() !== "";
+  const enteredPasswordIsInvalid = !enteredPasswordIsValid && passwordIsTouched;
+
+  let formIsValid = false;
+
+  if (enteredUserNameIsValid && enteredPasswordIsValid) {
+    formIsValid = true;
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!enteredUserNameIsValid) {
+      return;
+    }
+
+    if (!enteredPasswordIsValid) {
+      return;
+    }
+
+    setUserName("");
+    setUserNameIsTouched(false);
+
+    setPassword("");
+    setPasswordIsTouched(false);
   };
 
-  const nameChangeHandler = (e) => {
+  const userNameChangeHandler = (e) => {
     setUserName(e.target.value);
   };
+
+  const userNameBlurHandler = () => {
+    setUserNameIsTouched(true);
+  }
 
   const passwordChangeHandler = (e) => {
     setPassword(e.target.value);
   };
+
+  const passwordBlurHandler = () => {
+    setPasswordIsTouched(true);
+  }
 
   return (
     <main>
@@ -31,8 +66,10 @@ const Login = () => {
           name="userName"
           value={userName}
           holder="User Name: "
-          onChange={nameChangeHandler}
+          onChange={userNameChangeHandler}
+          onBlur={userNameBlurHandler}
         ></Input>
+        {enteredUserNameIsInvalid && <p className="invalid"> Please enter a valid user name. </p>}
 
         <label> Password: </label>
         <Input
@@ -41,9 +78,11 @@ const Login = () => {
           value={password}
           holder="Password: "
           onChange={passwordChangeHandler}
+          onBlur={passwordBlurHandler}
         ></Input>
+        {enteredPasswordIsInvalid && <p className="invalid"> Please enter a valid password. </p>}
 
-        <Button onClick={submitHandler} type="submit">
+        <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Login
         </Button>
         <Link to="/"> Home</Link>
