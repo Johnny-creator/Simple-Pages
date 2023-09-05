@@ -34,6 +34,10 @@ form a:hover {
   font-size: 50px;
 }
 
+.invalid {
+  color: red;
+}
+
 @media only screen and (min-width: 615px) {
   form input,
   form button {
