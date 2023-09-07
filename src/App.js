@@ -6,11 +6,13 @@ import Home from "./components/Home/Home";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
 import Create from "./components/Create/Create";
+import SiteList from "./components/SiteList/SiteList";
 import Footer from "./components/UI/Footer";
 import Error from "./components/UI/Error";
 
 import "./App.css";
 import "./components/UI/mode.css";
+
 
 
 const App = () => {
@@ -36,6 +38,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/sites" element={<SiteList />} />
         </Routes>
         <Footer style={localStorage.getItem("Theme")} />
       </div>
