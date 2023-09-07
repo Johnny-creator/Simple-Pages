@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 import Input from "./../Input/Input";
 import Button from "./../UI/Button";
@@ -38,6 +39,7 @@ const Create = () => {
 
         <Input type="file"></Input>
         <Button type="submit"> Create Page </Button>
+        <Link to="/"> Home</Link>
       </form>
     </main>
   );
