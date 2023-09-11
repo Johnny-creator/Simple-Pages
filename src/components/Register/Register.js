@@ -2,36 +2,46 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../Input/Input";
 import Button from "../UI/Button";
+import useInput from "../../hooks/use-input";
 
 import "./register.css";
 
 const Register = () => {
-  const [userName, setUserName] = useState("");
-  const [userNameIsTouched, setUserNameIsTouched] = useState(false);
-  const enteredUserNameIsValid = userName.trim() !== "";
-  const enteredUserNameIsInvalid = !enteredUserNameIsValid && userNameIsTouched;
-
-  const [password, setPassword] = useState("");
-  const [passwordIsTouched, setPasswordIsTouched] = useState(false);
-  const enteredPasswordIsValid = password.trim() !== "";
-  const enteredPasswordIsInvalid = !enteredPasswordIsValid && passwordIsTouched;
-
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmPasswordIsTouched, setConfirmPasswordIsTouched] =
-    useState(false);
-  const enteredConfirmPasswordIsValid = confirmPassword.trim() !== "";
-  const enteredConfirmPasswordIsInvalid =
-    !enteredConfirmPasswordIsValid && confirmPasswordIsTouched;
-
   const [passwordConfirmation, setPasswordConfirmation] = useState(true);
+
+  const {
+    value: userName,
+    isValid: enteredUserNameIsValid,
+    hasError: enteredUserNameIsInvalid,
+    inputChangeHandler: userNameChangeHandler,
+    blurChangeHandler: userNameBlurHandler,
+    reset: resetUserNameInput,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: password,
+    isValid: enteredPasswordIsValid,
+    hasError: enteredPasswordIsInvalid,
+    inputChangeHandler: passwordChangeHandler,
+    blurChangeHandler: passwordBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: confirmPassword,
+    isValid: enteredConfirmPasswordIsValid,
+    hasError: enteredConfirmPasswordIsInvalid,
+    inputChangeHandler: confirmPasswordChangeHandler,
+    blurChangeHandler: confirmPasswordBlurHandler,
+    reset: resetConfirmPasswordInput,
+  } = useInput((value) => value.trim() !== "");
 
   let formIsValid = false;
 
   if (
     enteredUserNameIsValid &&
     enteredPasswordIsValid &&
-    enteredConfirmPasswordIsValid &&
-    passwordConfirmation
+    enteredConfirmPasswordIsValid
   ) {
     formIsValid = true;
   }
@@ -56,42 +66,13 @@ const Register = () => {
       return;
     }
 
-    setUserName("");
-    setUserNameIsTouched(false);
+    resetUserNameInput();
 
-    setPassword("");
-    setPasswordIsTouched(false);
+    resetPasswordInput();
 
-    setConfirmPassword("");
-    setConfirmPasswordIsTouched(false);
+    resetConfirmPasswordInput();
 
     setPasswordConfirmation(true);
-  };
-
-  const userNameChangeHandler = (e) => {
-    setUserName(e.target.value);
-  };
-
-  const userNameBlurHandler = () => {
-    setUserNameIsTouched(true);
-  };
-
-  const passwordChangeHandler = (e) => {
-    setPassword(e.target.value);
-    setPasswordConfirmation(true);
-  };
-
-  const passwordBlurHandler = () => {
-    setPasswordIsTouched(true);
-  };
-
-  const confirmPasswordChangeHandler = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordConfirmation(true);
-  };
-
-  const confirmPasswordBlurHandler = () => {
-    setConfirmPasswordIsTouched(true);
   };
 
   return (

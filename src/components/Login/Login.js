@@ -2,19 +2,28 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../Input/Input";
 import Button from "../UI/Button";
+import useInput from "../../hooks/use-input";
 
 import "./login.css";
 
 const Login = () => {
-  const [userName, setUserName] = useState("");
-  const [userNameIsTouched, setUserNameIsTouched] = useState(false);
-  const enteredUserNameIsValid = userName.trim() !== "";
-  const enteredUserNameIsInvalid = !enteredUserNameIsValid && userNameIsTouched;
+  const {
+    value: userName,
+    isValid: enteredUserNameIsValid,
+    hasError: enteredUserNameIsInvalid,
+    inputChangeHandler: userNameChangeHandler,
+    blurChangeHandler: userNameBlurHandler,
+    reset: resetUserNameInput,
+  } = useInput((value) => value.trim() !== "");
 
-  const [password, setPassword] = useState("");
-  const [passwordIsTouched, setPasswordIsTouched] = useState(false);
-  const enteredPasswordIsValid = password.trim() !== "";
-  const enteredPasswordIsInvalid = !enteredPasswordIsValid && passwordIsTouched;
+  const {
+    value: password,
+    isValid: enteredPasswordIsValid,
+    hasError: enteredPasswordIsInvalid,
+    inputChangeHandler: passwordChangeHandler,
+    blurChangeHandler: passwordBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => value.trim() !== "");
 
   let formIsValid = false;
 
@@ -33,28 +42,10 @@ const Login = () => {
       return;
     }
 
-    setUserName("");
-    setUserNameIsTouched(false);
+    resetUserNameInput();
 
-    setPassword("");
-    setPasswordIsTouched(false);
+    resetPasswordInput();
   };
-
-  const userNameChangeHandler = (e) => {
-    setUserName(e.target.value);
-  };
-
-  const userNameBlurHandler = () => {
-    setUserNameIsTouched(true);
-  }
-
-  const passwordChangeHandler = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const passwordBlurHandler = () => {
-    setPasswordIsTouched(true);
-  }
 
   return (
     <main>
@@ -69,7 +60,9 @@ const Login = () => {
           onChange={userNameChangeHandler}
           onBlur={userNameBlurHandler}
         ></Input>
-        {enteredUserNameIsInvalid && <p className="invalid"> Please enter a valid user name. </p>}
+        {enteredUserNameIsInvalid && (
+          <p className="invalid"> Please enter a valid user name. </p>
+        )}
 
         <label> Password: </label>
         <Input
@@ -80,7 +73,9 @@ const Login = () => {
           onChange={passwordChangeHandler}
           onBlur={passwordBlurHandler}
         ></Input>
-        {enteredPasswordIsInvalid && <p className="invalid"> Please enter a valid password. </p>}
+        {enteredPasswordIsInvalid && (
+          <p className="invalid"> Please enter a valid password. </p>
+        )}
 
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Login
