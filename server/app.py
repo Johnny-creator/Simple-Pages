@@ -11,7 +11,7 @@ def index():
 
 @app.post("/signup")
 def create_user():
-    data = request.form
+    data = request.get_json()
     new_user = User(data["username"], data["password"], data["email"], None)
     #new_user = User("test", "testpass", "test@test.com", None)
     db.session.add_all([new_user])
