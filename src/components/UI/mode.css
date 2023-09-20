@@ -22,6 +22,10 @@
   background-color: #333;
 }
 
+.light form a:hover {
+  color: black;
+}
+
 .dark {
   background-color: #333;
   color: white;
@@ -45,4 +49,16 @@
 .dark button:hover {
   color: black;
   background-color: aliceblue;
+}
+
+.dark form a:hover {
+  color: white;
+}
+
+textarea {
+  transition: 0.3s;
+}
+
+textarea:hover {
+  background-color: lightblue;
 }
