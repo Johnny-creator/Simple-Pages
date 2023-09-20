@@ -26,10 +26,6 @@ form a {
   transition: 0.3s;
 }
 
-form a:hover {
-  color: white;
-}
-
 .registerHeader {
   font-size: 50px;
 }
