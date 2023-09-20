@@ -1,12 +1,20 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 import Input from "./../Input/Input";
 import Button from "./../UI/Button";
 
-import "./create.css"
+import "./create.css";
 
 const Create = () => {
+  let navigate = useNavigate();
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    let path = `/result`;
+    navigate(path);
+  };
+
   return (
     <main>
       <h1> Create your page</h1>
@@ -38,7 +46,7 @@ const Create = () => {
         </div>
 
         <Input type="file"></Input>
-        <Button type="submit"> Create Page </Button>
+        <Button type="submit" onClick={submitHandler}> Create Page </Button>
         <Link to="/"> Home</Link>
       </form>
     </main>
