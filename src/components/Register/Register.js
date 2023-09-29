@@ -19,6 +19,15 @@ const Register = () => {
   } = useInput((value) => value.trim() !== "");
 
   const {
+    value: email,
+    isValid: enteredEmailIsValid,
+    hasError: enteredEmailIsInvalid,
+    inputChangeHandler: emailChangeHandler,
+    blurChangeHandler: emailBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
     value: password,
     isValid: enteredPasswordIsValid,
     hasError: enteredPasswordIsInvalid,
@@ -41,12 +50,13 @@ const Register = () => {
   if (
     enteredUserNameIsValid &&
     enteredPasswordIsValid &&
-    enteredConfirmPasswordIsValid
+    enteredConfirmPasswordIsValid &&
+    enteredEmailIsValid
   ) {
     formIsValid = true;
   }
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     if (!enteredUserNameIsValid) {
@@ -61,9 +71,32 @@ const Register = () => {
       return;
     }
 
+    if (!enteredEmailIsValid) {
+      return;
+    }
+
     if (password !== confirmPassword) {
       setPasswordConfirmation(false);
       return;
+    }
+
+    let data = {
+      username: userName,
+      password: password,
+      email: email,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5001/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        console.log("Worked");
+      }
+    } catch (error) {
+      console.log("There has been an error " + error);
     }
 
     resetUserNameInput();
@@ -71,6 +104,8 @@ const Register = () => {
     resetPasswordInput();
 
     resetConfirmPasswordInput();
+
+    resetEmailInput();
 
     setPasswordConfirmation(true);
   };
@@ -92,6 +127,19 @@ const Register = () => {
           <p className="invalid"> Please enter a valid username. </p>
         )}
 
+        <label> Email: </label>
+        <Input
+          type="text"
+          name="email"
+          value={email}
+          holder="Email: "
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
+        ></Input>
+        {enteredEmailIsInvalid && (
+          <p className="invalid"> Please enter a valid email. </p>
+        )}
+
         <label> Password: </label>
         <Input
           type="text"
@@ -105,7 +153,7 @@ const Register = () => {
           <p className="invalid"> Please enter a valid password. </p>
         )}
 
-        <label> Create Password: </label>
+        <label> Confirm Password: </label>
         <Input
           type="text"
           name="confirmPassword"
@@ -122,6 +170,7 @@ const Register = () => {
         {!passwordConfirmation && (
           <p className="invalid"> Passwords must match.</p>
         )}
+
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Create User
         </Button>

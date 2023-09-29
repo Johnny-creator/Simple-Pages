@@ -16,8 +16,6 @@ def create_user():
     username_in_db = False
     email_in_db = False
 
-    
-
     # CHECK IF USERNAME OR EMAIL ALREADY EXISTS
     if User.query.filter_by(username=data['username']).first() is not None:
         username_in_db = True
@@ -34,8 +32,6 @@ def create_user():
         return "An account with that email address already exists", 409
     elif username_in_db:
         return "An account with that username already exists", 409
-
-    print("going on")
 
     # CREATE AND ADD THE NEW USER AND THEN GET THE USER'S ID FOR THE SITE
     new_user = User(data["username"], data["password"], data["email"], None)
@@ -56,7 +52,7 @@ def create_user():
 def get_user(name):
     current_user = User.query.filter_by(username=name).all()[0]
 
-    return jsonify(current_user.__dict__), 418
+    return jsonify(current_user.username), 418
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
