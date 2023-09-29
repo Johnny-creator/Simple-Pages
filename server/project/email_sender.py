@@ -9,7 +9,7 @@ def send_activation_email(username: str, email_address: str, activation_code: st
     smtpObj.ehlo()
     smtpObj.starttls()
     smtpObj.login(os.getenv("EMAIL_USERNAME"), os.getenv("EMAIL_PASSWORD"))
-    smtpObj.sendmail("my_email_address@gmail.com", "shelcod@gmail.com", "What's up doc?\nBobs and vagan<a href='https://www.sheldonc.ca'>Click here!</a>") 
+    smtpObj.sendmail("my_email_address@gmail.com", "shelcod@gmail.com", "What's up doc?\nthis is a test<a href='https://www.sheldonc.ca'>Click here!</a>") 
 
 if __name__ == "__main__":
     print("Test")
