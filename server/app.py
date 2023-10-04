@@ -1,13 +1,16 @@
 import os
-from project import app, db
+from project import app, db, email_sender
 from project.models import User, Site
 from flask import request, jsonify
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+
+jwt = JWTManager(app)
 
 @app.get("/")
 def index():
     sheldon = User('sheldon', 'test', 'test@test', None)
-    sheldonsSite = Site()
+    #sheldonsSite = Site()
     return sheldon.username
 
 @app.post("/signup")
@@ -43,16 +46,49 @@ def create_user():
     db.session.add(new_user)
     db.session.commit()
 
+    # SEND ACTIVATION EMAIL
+    email_sender.send_activation_email(new_user.username, new_user.email, new_user.activation_UUID)
+
     return jsonify(
         SITE_id = new_site.user_id,
         USER_id = new_user.id
     )
+
+@app.get("/activate")
+def activate():
+    activation_code = request.args.get("token")
+    
+    user_to_activate = User.query.filter_by(activation_UUID = activation_code).first()
+
+    # Check if user is not activated yet
+    if user_to_activate.is_active == False:
+        user_to_activate.is_active = True
+        db.session.add(user_to_activate)
+        db.session.commit()
+
+        return user_to_activate.username + " Has been activated!"
+
+    return "Failed to activate " + user_to_activate.username
+
+@app.post("/login")
+def login():
+    username = request.form.get("username")
+    password = request.form.get("username")#generate_password_hash(request.form.get("password"))
+
+    return jsonify(
+        user = username,
+        passwd = password
+        )
+    #access_token = create_access_token(identity=username)
+    #return jsonify(access_token=access_token)
+
 
 @app.get("/get_user/<name>")
 def get_user(name):
     current_user = User.query.filter_by(username=name).all()[0]
 
     return jsonify(current_user.username), 418
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
