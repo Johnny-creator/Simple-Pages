@@ -46,6 +46,8 @@ def create_user():
     db.session.add(new_user)
     db.session.commit()
 
+    print(new_user.email)
+
     # SEND ACTIVATION EMAIL
     email_sender.send_activation_email(new_user.username, new_user.email, new_user.activation_UUID)
 
@@ -72,15 +74,21 @@ def activate():
 
 @app.post("/login")
 def login():
-    username = request.form.get("username")
-    password = request.form.get("username")#generate_password_hash(request.form.get("password"))
+    data = request.get_json()
 
-    return jsonify(
-        user = username,
-        passwd = password
-        )
-    #access_token = create_access_token(identity=username)
-    #return jsonify(access_token=access_token)
+    access_token = create_access_token(identity=data["username"])
+    return jsonify(access_token=access_token)
+    
+    # return jsonify(
+    #     type = "TESTING",
+    #     user = data["username"],
+    #     passwd = data["password"]
+    #     ), 201
+
+@jwt_required
+@app.get("/jwttest")
+def jwttest():
+    return "This worked"
 
 
 @app.get("/get_user/<name>")
