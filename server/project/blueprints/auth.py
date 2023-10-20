@@ -1,15 +1,22 @@
 from flask import Blueprint, jsonify, request
 from project.models import User, Site
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, jwt_required, current_user, get_jwt_identity
 
 auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.post("/login")
 def login():
-    data = request.get_json()
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
 
-    access_token = create_access_token(identity=data["username"])
-    return jsonify(access_token=access_token)
+    print("Username: " + username + " and Password: " + password)
+
+    access_token = create_access_token(identity=username)
+    return jsonify(
+        {
+            "current_user": username,
+            "access_token": access_token,
+        }), 200
     
     # return jsonify(
     #     type = "TESTING",
@@ -17,10 +24,11 @@ def login():
     #     passwd = data["password"]
     #     ), 201
 
-@jwt_required
-@auth_bp.get("/jwttest")
+@auth_bp.get("/whoami")
+@jwt_required()
 def jwttest():
-    return "This worked"
+    print("works!")
+    return jsonify({"user_details":{"username":current_user.username, "email": current_user.email}})
 
 
 @auth_bp.get("/get_user/<name>")

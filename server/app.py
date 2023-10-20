@@ -1,103 +1,53 @@
 import os
 from project import app, db, email_sender
 from project.models import User, Site
+from project.blueprints.register import register_bp
+from project.blueprints.auth import auth_bp
 from flask import request, jsonify
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import JWTManager
 
 # JWT MANAGER!
 jwt = JWTManager(app)
 
 @app.get("/")
 def index():
-    sheldon = User('sheldon', 'test', 'test@test', None)
+    sheldon = User('sheldon1', 'test', 'test@test', None)
     #sheldonsSite = Site()
-    return sheldon.username
+    return jsonify({"name":sheldon.username})
 
-@app.post("/signup")
-def create_user():
-    data = request.get_json()
-    username_in_db = False
-    email_in_db = False
+# Blueprints
+app.register_blueprint(register_bp, url_prefix="/register")
+app.register_blueprint(auth_bp, url_prefix="/auth")
 
-    # CHECK IF USERNAME OR EMAIL ALREADY EXISTS
-    if User.query.filter_by(username=data['username']).first() is not None:
-        username_in_db = True
-        print("ligma")
-        print(User.query.filter_by(username=data['username']).first())
+# Load user
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_headers, jwt_data):
 
-    if User.query.filter_by(email=data["email"]).first() is not None:
-        email_in_db = True
-        print("sugma")
-    
-    if username_in_db and email_in_db:
-        return "An account with that username and email address already exists", 409
-    elif email_in_db:
-        return "An account with that email address already exists", 409
-    elif username_in_db:
-        return "An account with that username already exists", 409
+    identity = jwt_data['sub']
 
-    # CREATE AND ADD THE NEW USER AND THEN GET THE USER'S ID FOR THE SITE
-    new_user = User(data["username"], data["password"], data["email"], None)
-    db.session.add(new_user)
-    db.session.commit()
-    new_user = User.query.filter_by(username=data["username"]).first()
+    return User.query.filter_by(username = identity).one_or_none()
 
-    new_site = Site(new_user.id)
-    db.session.add(new_user)
-    db.session.commit()
+# jwt error handlers
+@jwt.expired_token_loader
+def expired_token_callback(jwt_header, jwt_data):
+    return jsonify({
+        "message": "Token has expired",
+        "error":"Token has expired"
+    }), 401
 
-    print(new_user.email)
+@jwt.invalid_token_loader
+def invalid_token_callback(error):
+    return jsonify({
+        "message": "signiture verification failed",
+        "error":"invalid_token"
+    }), 401
 
-    # SEND ACTIVATION EMAIL
-    email_sender.send_activation_email(new_user.username, new_user.email, new_user.activation_UUID)
-
-    return jsonify(
-        SITE_id = new_site.user_id,
-        USER_id = new_user.id
-    )
-
-@app.get("/activate")
-def activate():
-    activation_code = request.args.get("token")
-    
-    user_to_activate = User.query.filter_by(activation_UUID = activation_code).first()
-
-    # Check if user is not activated yet
-    if user_to_activate.is_active == False:
-        user_to_activate.is_active = True
-        db.session.add(user_to_activate)
-        db.session.commit()
-
-        return user_to_activate.username + " Has been activated!"
-
-    return "Failed to activate " + user_to_activate.username
-
-@app.post("/login")
-def login():
-    data = request.get_json()
-
-    access_token = create_access_token(identity=data["username"])
-    return jsonify(access_token=access_token)
-    
-    # return jsonify(
-    #     type = "TESTING",
-    #     user = data["username"],
-    #     passwd = data["password"]
-    #     ), 201
-
-@jwt_required
-@app.get("/jwttest")
-def jwttest():
-    return "This worked"
-
-
-@app.get("/get_user/<name>")
-def get_user(name):
-    current_user = User.query.filter_by(username=name).all()[0]
-
-    return jsonify(current_user.username), 418
-
+@jwt.unauthorized_loader
+def missing_token_callback(error):
+    return jsonify({
+        "message": "this token is invalid!",
+        "error":"invalid token"
+    }), 401
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

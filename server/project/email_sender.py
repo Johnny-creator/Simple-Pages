@@ -18,7 +18,7 @@ def send_activation_email(username: str, email_address: str, activation_code: st
         <body>
             <p>Hello {username}</p>
             <p>To ensure the security of your Simple Page account, we require you to verify your account by clicking the following link:</p> 
-            <a href="http://127.0.0.1:5001/activate?token={activation_code}">CLICK HERE!</a>
+            <a href="http://127.0.0.1:5001/register/activate?token={activation_code}">CLICK HERE!</a>
             <p>This simple step helps us protect your account and maintain a secure environment. Please click the link at your earliest convenience, as it is time-sensitive.</p>
             <p>If you did not initiate this verification or have concerns, please contact our support team at [Support Email] for assistance.</p>
             <p>Thank you for your cooperation.</p>
@@ -32,8 +32,8 @@ def send_activation_email(username: str, email_address: str, activation_code: st
     smtpObj.ehlo()
     smtpObj.starttls()
     smtpObj.login(os.getenv("EMAIL_USERNAME"), os.getenv("EMAIL_PASSWORD"))
-    smtpObj.sendmail("my_email_address@gmail.com", email_address, msg.as_string()) 
+    smtpObj.sendmail("simplepage1993@gmail.com", email_address, msg.as_string())
 
-if __name__ == "__main__":
-    print("Test")
-    send_activation_email("lul", "shelcod@gmail.com", "lul")
+#if __name__ == "__main__":
+#    print("Test")
+#    send_activation_email("lul", "shelcod@gmail.com", "lul")

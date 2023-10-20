@@ -21,7 +21,7 @@ class User(db.Model):
 
     def __init__(self, username, password, email, site_id):
         self.username = username
-        self.password = generate_password_hash(password)
+        self.password = generate_password_hash(password, method='pbkdf2')
         self.email = email
         self.site_id = site_id
         self.is_active = False

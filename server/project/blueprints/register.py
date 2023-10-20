@@ -13,19 +13,17 @@ def create_user():
     # CHECK IF USERNAME OR EMAIL ALREADY EXISTS
     if User.query.filter_by(username=data['username']).first() is not None:
         username_in_db = True
-        print("ligma")
         print(User.query.filter_by(username=data['username']).first())
 
     if User.query.filter_by(email=data["email"]).first() is not None:
         email_in_db = True
-        print("sugma")
     
     if username_in_db and email_in_db:
-        return "An account with that username and email address already exists", 409
+        return jsonify({"error": "User already exists"}), 403
     elif email_in_db:
-        return "An account with that email address already exists", 409
+        return jsonify({"error": "A user with that email already exists"}), 403
     elif username_in_db:
-        return "An account with that username already exists", 409
+        return jsonify({"error": "User already exists"}), 403
 
     # CREATE AND ADD THE NEW USER AND THEN GET THE USER'S ID FOR THE SITE
     new_user = User(data["username"], data["password"], data["email"], None)
@@ -37,15 +35,10 @@ def create_user():
     db.session.add(new_user)
     db.session.commit()
 
-    print(new_user.email)
-
     # SEND ACTIVATION EMAIL
     email_sender.send_activation_email(new_user.username, new_user.email, new_user.activation_UUID)
-
-    return jsonify(
-        SITE_id = new_site.user_id,
-        USER_id = new_user.id
-    )
+    
+    return jsonify({"message": "User created"}), 201
 
 @register_bp.get("/activate")
 def activate():
@@ -59,6 +52,6 @@ def activate():
         db.session.add(user_to_activate)
         db.session.commit()
 
-        return user_to_activate.username + " Has been activated!"
+        return jsonify({"message": "User activated"}), 201
 
-    return "Failed to activate " + user_to_activate.username
+    return jsonify({"message":"Failed to activate " + user_to_activate.username}), 403
