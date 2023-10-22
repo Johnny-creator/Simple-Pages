@@ -31,12 +31,6 @@ def create_user():
     db.session.commit()
     #new_user = User.query.filter_by(username=data["username"]).first()
 
-    #new_site = Site(new_user.id)
-    #new_user.site_id = new_site.id
-    #db.session.add(new_user)
-    #db.session.add(new_site)
-    #db.session.commit()
-
     # SEND ACTIVATION EMAIL
     email_sender.send_activation_email(new_user.username, new_user.email, new_user.activation_UUID)
     
