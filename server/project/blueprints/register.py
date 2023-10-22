@@ -29,11 +29,13 @@ def create_user():
     new_user = User(data["username"], data["password"], data["email"], None)
     db.session.add(new_user)
     db.session.commit()
-    new_user = User.query.filter_by(username=data["username"]).first()
+    #new_user = User.query.filter_by(username=data["username"]).first()
 
-    new_site = Site(new_user.id)
-    db.session.add(new_user)
-    db.session.commit()
+    #new_site = Site(new_user.id)
+    #new_user.site_id = new_site.id
+    #db.session.add(new_user)
+    #db.session.add(new_site)
+    #db.session.commit()
 
     # SEND ACTIVATION EMAIL
     email_sender.send_activation_email(new_user.username, new_user.email, new_user.activation_UUID)
@@ -48,6 +50,7 @@ def activate():
 
     # Check if user is not activated yet
     if user_to_activate.is_active == False:
+        # Create site to attach to user
         user_to_activate.is_active = True
         db.session.add(user_to_activate)
         db.session.commit()

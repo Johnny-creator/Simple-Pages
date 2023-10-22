@@ -17,12 +17,6 @@ def login():
             "current_user": username,
             "access_token": access_token,
         }), 200
-    
-    # return jsonify(
-    #     type = "TESTING",
-    #     user = data["username"],
-    #     passwd = data["password"]
-    #     ), 201
 
 @auth_bp.get("/whoami")
 @jwt_required()

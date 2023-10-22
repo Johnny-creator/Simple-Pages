@@ -12,8 +12,17 @@ jwt = JWTManager(app)
 @app.get("/")
 def index():
     sheldon = User('sheldon1', 'test', 'test@test', None)
-    #sheldonsSite = Site()
     return jsonify({"name":sheldon.username})
+
+@app.get("/<name>")
+def get_site(name):
+    selected_user = User.query.filter_by(username=name).first()
+    
+    if selected_user is not None:
+
+        return jsonify({"site_id": selected_user.site_id.id}), 200
+    
+    return jsonify({"message": "User not found"}), 404
 
 # Blueprints
 app.register_blueprint(register_bp, url_prefix="/register")
