@@ -4,10 +4,6 @@ from project.models import User, Site
 from project.blueprints.register import register_bp
 from project.blueprints.auth import auth_bp
 from flask import request, jsonify
-from flask_jwt_extended import JWTManager
-
-# JWT MANAGER!
-jwt = JWTManager(app)
 
 @app.get("/")
 def index():
