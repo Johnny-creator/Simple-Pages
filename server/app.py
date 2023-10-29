@@ -1,24 +1,50 @@
 import os
-from project import app, db, email_sender
+from project import app, db, email_sender, jwt
 from project.models import User, Site
 from project.blueprints.register import register_bp
 from project.blueprints.auth import auth_bp
 from flask import request, jsonify
+from flask_jwt_extended import get_jwt, create_access_token, get_jwt_identity, set_access_cookies
+from datetime import datetime, timezone, timedelta
 
 @app.get("/")
 def index():
     sheldon = User('sheldon1', 'test', 'test@test', None)
     return jsonify({"name":sheldon.username})
 
+# This is the route that will generate the users webpage.
 @app.get("/<name>")
 def get_site(name):
     selected_user = User.query.filter_by(username=name).first()
     
     if selected_user is not None:
 
-        return jsonify({"site_id": selected_user.site_id.id}), 200
+        return jsonify({"site_id": selected_user.site_id.sect1title}), 200
     
     return jsonify({"message": "User not found"}), 404
+
+# Refresh JWT when it is within 30 minutes of expiring
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original response
+        return response
+    
+# Testing login
+@app.route("/login2", methods=["POST"])
+def login():
+    response = jsonify({"msg": "login successful"})
+    access_token = create_access_token(identity="shelcod")
+    set_access_cookies(response, access_token)
+    return response
 
 # Blueprints
 app.register_blueprint(register_bp, url_prefix="/register")
