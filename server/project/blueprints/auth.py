@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify, request
+from project import db
 from project.models import User, Site
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, current_user, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, current_user, get_jwt_identity, set_access_cookies
 from werkzeug.security import check_password_hash
+from sqlalchemy import text
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -24,15 +26,19 @@ def login():
     return jsonify({"error": "invalid username or password"}), 418
 
 @auth_bp.post("/make_site")
-@jwt_required
+@jwt_required()
 def make_site():
     # TODO
-    # - query the users site
+    # - query the users site - DONE
     # - post the data to database
     # - return message
     data = request.get_json()
 
-    #current_site = Site.query.filter_by(=data.get)
+    current_user = User.query.filter_by(username=get_jwt_identity()).first()
+    current_site = Site.query.filter_by(id=current_user.site_id.id).first()
+    
+
+    return jsonify({"msg": current_site.id}), 418
 
 
 @auth_bp.get("/whoami")
