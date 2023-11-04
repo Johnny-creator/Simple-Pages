@@ -25,22 +25,6 @@ def login():
 
     return jsonify({"error": "invalid username or password"}), 418
 
-@auth_bp.post("/make_site")
-@jwt_required()
-def make_site():
-    # TODO
-    # - query the users site - DONE
-    # - post the data to database
-    # - return message
-    data = request.get_json()
-
-    current_user = User.query.filter_by(username=get_jwt_identity()).first()
-    current_site = Site.query.filter_by(id=current_user.site_id.id).first()
-    
-
-    return jsonify({"msg": current_site.id}), 418
-
-
 @auth_bp.get("/whoami")
 @jwt_required()
 def jwttest():

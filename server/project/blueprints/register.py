@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
 from project import db, email_sender
 from project.models import User, Site
 
@@ -36,6 +37,28 @@ def create_user():
     
     return jsonify({"message": "User created"}), 201
 
+@register_bp.post("/make_site")
+@jwt_required()
+def make_site():
+    # TODO
+    # - query the users site - DONE
+    # - post the data to database
+    # - return message
+    data = request.get_json()
+
+    current_user = User.query.filter_by(username=get_jwt_identity()).first()
+    current_site = Site.query.filter_by(id=current_user.site_id.id).first()
+    
+    current_site.title = data.get("title")
+    current_site.sect1Title = data.get("sect1Title")
+    current_site.sect1Text = data.get("sect1Text")
+    current_site.sect2Title = data.get("sect2Title")
+    current_site.sect2Text = data.get("sect2Text")
+    current_site.sect3Title = data.get("sect3Title")
+    current_site.sect3Text = data.get("sect3Text")
+
+    return jsonify({"msg": current_site.id}), 418
+
 @register_bp.get("/activate")
 def activate():
     activation_code = request.args.get("token")
@@ -44,11 +67,19 @@ def activate():
 
     # Check if user is not activated yet
     if user_to_activate.is_active == False:
-        # Create site to attach to user
         user_to_activate.is_active = True
         db.session.add(user_to_activate)
+        # Create site to attach to user
+        new_site = Site(user_to_activate.id)
+        db.session.add(new_site)
+
         db.session.commit()
 
         return jsonify({"message": "User activated"}), 201
 
     return jsonify({"message":"Failed to activate " + user_to_activate.username}), 403
+
+@register_bp.post("/make_site")
+def makesite():
+    data = request.json
+    
