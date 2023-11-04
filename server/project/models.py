@@ -15,18 +15,19 @@ class User(db.Model):
     password = Column(Text, nullable=False)
     email = Column(Text, nullable=False, unique=True)
     activation_UUID = db.Column(UUID(as_uuid=True), default=uuid.uuid4)
+    is_admin = Column(Boolean, nullable=False)
     is_active = Column(Boolean, nullable=False)
     is_banned = Column(Boolean, nullable=False)
     
 
     def __init__(self, username, password, email, site_id):
         self.username = username
-        self.password = generate_password_hash(password, method='pbkdf2')
+        self.password = generate_password_hash(password, method="pbkdf2")
         self.email = email
         self.site_id = site_id
+        self.is_admin = False
         self.is_active = False
         self.is_banned = False
-
 
     def __repr__(self):
         return "Username is " + self.username
@@ -38,12 +39,12 @@ class Site(db.Model):
     id = Column(BigInteger, primary_key=True)
     user_id = Column(BigInteger, ForeignKey('users.id'))
     title = Column(Text)
-    sect1title = Column(Text)
-    sect1text = Column(Text)
-    sect2itle = Column(Text)
-    sect2text = Column(Text)
-    sect3itle = Column(Text)
-    sect3text = Column(Text)
+    sect1Title = Column(Text)
+    sect1Text = Column(Text)
+    sect2Title = Column(Text)
+    sect2Text = Column(Text)
+    sect3Title = Column(Text)
+    sect3Text = Column(Text)
 
     def __init__(self, user_id):
         self.user_id = user_id
