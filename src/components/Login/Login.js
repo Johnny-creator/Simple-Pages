@@ -7,6 +7,8 @@ import useInput from "../../hooks/use-input";
 import "./login.css";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     value: userName,
     isValid: enteredUserNameIsValid,
@@ -66,7 +68,7 @@ const Login = () => {
 
         <label> Password: </label>
         <Input
-          type="text"
+          type={showPassword ? "text" : "password"}
           name="password"
           value={password}
           holder="Password: "
@@ -76,6 +78,15 @@ const Login = () => {
         {enteredPasswordIsInvalid && (
           <p className="invalid"> Please enter a valid password. </p>
         )}
+        <div className="passwordChecker">
+          <label type="check">Show Password</label>
+          <input
+            id="check"
+            type="checkbox"
+            value={showPassword}
+            onChange={() => setShowPassword((prev) => !prev)}
+          />  
+        </div>
 
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Login
