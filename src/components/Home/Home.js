@@ -21,14 +21,14 @@ const Home = () => {
 
       <div className="container">
         <div className="box">
-        <Link to="/create">
+          <Link to="/create">
             <Button type="button"> Build Website </Button>
           </Link>
           <p> Create some simple HTML pages </p>
         </div>
 
         <div className="box">
-        <Link to="/login">
+          <Link to="/login">
             <Button type="button"> Log In </Button>
           </Link>
           <p> Login to view and save your pages </p>
