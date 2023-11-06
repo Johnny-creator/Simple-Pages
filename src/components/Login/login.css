@@ -1,8 +1,21 @@
 form a {
-    color: #73a5f5;
-    transition: 0.3s;
+  color: #73a5f5;
+  transition: 0.3s;
 }
 
 form a:hover {
-    color: white;
+  color: white;
+}
+
+.passwordChecker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+@media only screen and (min-width: 615px) {
+  .passwordChecker {
+    width: 20%;
+  }
 }
