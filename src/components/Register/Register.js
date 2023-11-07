@@ -8,6 +8,7 @@ import "./register.css";
 
 const Register = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState(true);
+  const [showPasswords, setShowPasswords] = useState(false);
 
   const {
     value: userName,
@@ -142,7 +143,7 @@ const Register = () => {
 
         <label> Password: </label>
         <Input
-          type="text"
+          type={showPasswords ? "text" : "password"}
           name="password"
           value={password}
           holder="Password: "
@@ -155,7 +156,7 @@ const Register = () => {
 
         <label> Confirm Password: </label>
         <Input
-          type="text"
+          type={showPasswords ? "text" : "password"}
           name="confirmPassword"
           value={confirmPassword}
           holder="Confirm Password: "
@@ -170,6 +171,15 @@ const Register = () => {
         {!passwordConfirmation && (
           <p className="invalid"> Passwords must match.</p>
         )}
+        <div className="passwordChecker">
+          <label type="check">Show Passwords</label>
+          <input
+            id="check"
+            type="checkbox"
+            value={showPasswords}
+            onChange={() => setShowPasswords((prev) => !prev)}
+          />
+        </div>
 
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Create User
