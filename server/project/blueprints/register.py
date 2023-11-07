@@ -1,9 +1,25 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from project import db, email_sender
 from project.models import User, Site
+from werkzeug.utils import secure_filename
+import os
 
 register_bp = Blueprint("register", __name__)
+
+def allowed_file_types(filename):
+    '''
+    Helper function to make sure files uploaded are either a PNG, JPEG, or AVIF
+
+    Args:
+        filename: the name of the file being uploaded
+
+    Returns
+        boolean: whether or not the file is one of the proper file types
+    '''
+    Allowed_Extensions = set(["png", "jpg", "jpeg", "avif"])
+    print(filename.rsplit(".", 1)[1].lower())
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in Allowed_Extensions
 
 @register_bp.post("/signup")
 def create_user():
@@ -44,20 +60,35 @@ def make_site():
     # - query the users site - DONE
     # - post the data to database
     # - return message
-    data = request.get_json()
-
+    #data = request.get_json()
     current_user = User.query.filter_by(username=get_jwt_identity()).first()
-    current_site = Site.query.filter_by(id=current_user.site_id.id).first()
-    
-    current_site.title = data.get("title")
-    current_site.sect1Title = data.get("sect1Title")
-    current_site.sect1Text = data.get("sect1Text")
-    current_site.sect2Title = data.get("sect2Title")
-    current_site.sect2Text = data.get("sect2Text")
-    current_site.sect3Title = data.get("sect3Title")
-    current_site.sect3Text = data.get("sect3Text")
 
-    return jsonify({"msg": current_site.id}), 418
+    if "files[]" not in request.files:
+        print("no file returned")
+    else:
+        file = request.files.getlist("files[]")[0]
+
+        if file and allowed_file_types(file.filename):
+            filename = secure_filename(str(current_user.id) + "." + file.filename.rsplit(".", 1)[1].lower())
+            print(os.getcwd())
+            file.save(os.path.join("project/user_images", filename))
+        else:
+            return jsonify({"message" : "File type is not allowed"}), 500
+
+    # current_site = Site.query.filter_by(id=current_user.site_id.id).first()
+    
+    # current_site.title = data.get("title")
+    # current_site.sect1Title = data.get("sect1Title")
+    # current_site.sect1Text = data.get("sect1Text")
+    # current_site.sect2Title = data.get("sect2Title")
+    # current_site.sect2Text = data.get("sect2Text")
+    # current_site.sect3Title = data.get("sect3Title")
+    # current_site.sect3Text = data.get("sect3Text")
+
+    #db.session.add(current_site)
+    #db.session.commit()
+
+    return jsonify({"msg": current_user.id}), 418
 
 @register_bp.get("/activate")
 def activate():
