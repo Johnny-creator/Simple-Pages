@@ -88,16 +88,21 @@ const Register = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5001/signup", {
+      const response = await fetch("http://localhost:5001/register/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       if (response.ok) {
         console.log("Worked");
+      } else {
+        const parsedResponse = await response.json();
+        console.log(parsedResponse.error);
       }
     } catch (error) {
-      console.log("There has been an error " + error);
+      console.log("test");
+      const parsedResponse = await response.json();
+      console.log(parsedResponse.error);
     }
 
     resetUserNameInput();
