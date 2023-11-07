@@ -36,11 +36,11 @@ def create_user():
         email_in_db = True
     
     if username_in_db and email_in_db:
-        return jsonify({"error": "User already exists"}), 403
+        return jsonify({"message": "User already exists"}), 403
     elif email_in_db:
-        return jsonify({"error": "A user with that email already exists"}), 403
+        return jsonify({"message": "A user with that email already exists"}), 403
     elif username_in_db:
-        return jsonify({"error": "User already exists"}), 403
+        return jsonify({"message": "User already exists"}), 403
 
     # CREATE AND ADD THE NEW USER AND THEN GET THE USER'S ID FOR THE SITE
     new_user = User(data["username"], data["password"], data["email"], None)

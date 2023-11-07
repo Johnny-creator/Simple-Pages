@@ -9,6 +9,7 @@ import "./register.css";
 const Register = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState(true);
   const [showPasswords, setShowPasswords] = useState(false);
+  const [message, setMessage] = useState();
 
   const {
     value: userName,
@@ -93,12 +94,8 @@ const Register = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (response.ok) {
-        console.log("Worked");
-      } else {
-        const parsedResponse = await response.json();
-        console.log(parsedResponse.error);
-      }
+      const parsedResponse = await response.json();
+      setMessage(parsedResponse.message);
     } catch (error) {
       console.log("test");
       const parsedResponse = await response.json();
@@ -189,6 +186,7 @@ const Register = () => {
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Create User
         </Button>
+        {message && <p>{message}</p>}
         <Link to="/"> Home</Link>
       </form>
     </main>
