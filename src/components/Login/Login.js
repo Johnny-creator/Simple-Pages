@@ -55,10 +55,10 @@ const Login = () => {
       <form>
         <label> User Name: </label>
         <Input
+          invalid={enteredUserNameIsInvalid ? "invalid-input" : ""}
           type="text"
           name="userName"
           value={userName}
-          holder="User Name: "
           onChange={userNameChangeHandler}
           onBlur={userNameBlurHandler}
         ></Input>
@@ -68,10 +68,10 @@ const Login = () => {
 
         <label> Password: </label>
         <Input
+          invalid={enteredPasswordIsInvalid ? "invalid-input" : ""}
           type={showPassword ? "text" : "password"}
           name="password"
           value={password}
-          holder="Password: "
           onChange={passwordChangeHandler}
           onBlur={passwordBlurHandler}
         ></Input>
@@ -85,7 +85,7 @@ const Login = () => {
             type="checkbox"
             value={showPassword}
             onChange={() => setShowPassword((prev) => !prev)}
-          />  
+          />
         </div>
 
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
