@@ -5,6 +5,7 @@ import "./input.css";
 const Input = (props) => {
   return (
     <input
+      className={props.invalid ? "invalid-input" : ""}
       type={props.type}
       name={props.name}
       value={props.value}
