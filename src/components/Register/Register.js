@@ -119,10 +119,10 @@ const Register = () => {
       <form>
         <label> User Name: </label>
         <Input
+          invalid={enteredUserNameIsInvalid ? "invalid-input" : ""}
           type="text"
           name="userName"
           value={userName}
-          holder="User Name: "
           onChange={userNameChangeHandler}
           onBlur={userNameBlurHandler}
         ></Input>
@@ -132,10 +132,10 @@ const Register = () => {
 
         <label> Email: </label>
         <Input
+          invalid={enteredEmailIsInvalid ? "invalid-input" : ""}
           type="text"
           name="email"
           value={email}
-          holder="Email: "
           onChange={emailChangeHandler}
           onBlur={emailBlurHandler}
         ></Input>
@@ -145,10 +145,10 @@ const Register = () => {
 
         <label> Password: </label>
         <Input
+          invalid={enteredPasswordIsInvalid ? "invalid-input" : ""}
           type={showPasswords ? "text" : "password"}
           name="password"
           value={password}
-          holder="Password: "
           onChange={passwordChangeHandler}
           onBlur={passwordBlurHandler}
         ></Input>
@@ -158,10 +158,10 @@ const Register = () => {
 
         <label> Confirm Password: </label>
         <Input
+          invalid={enteredConfirmPasswordIsInvalid ? "invalid-input" : ""}
           type={showPasswords ? "text" : "password"}
           name="confirmPassword"
           value={confirmPassword}
-          holder="Confirm Password: "
           onChange={confirmPasswordChangeHandler}
           onBlur={confirmPasswordBlurHandler}
         ></Input>
@@ -183,10 +183,12 @@ const Register = () => {
           />
         </div>
 
+        {message && <p className="message">{message}</p>}
+
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Create User
         </Button>
-        {message && <p>{message}</p>}
+
         <Link to="/"> Home</Link>
       </form>
     </main>

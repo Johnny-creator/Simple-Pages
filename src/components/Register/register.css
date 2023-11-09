@@ -34,6 +34,11 @@ form a {
   color: red;
 }
 
+.message {
+  color: red;
+  border-bottom: 1px solid red;
+}
+
 @media only screen and (min-width: 615px) {
   form input,
   form button {
