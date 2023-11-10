@@ -73,13 +73,20 @@ def make_site():
         else:
             return jsonify({"message" : "File type is not allowed"}), 500
 
-    current_user.site_id.title = data.get("title")
-    current_user.site_id.sect1Title = data.get("sect1Title")
-    current_user.site_id.sect1Text = data.get("sect1Text")
-    current_user.site_id.sect2Title = data.get("sect2Title")
-    current_user.site_id.sect2Text = data.get("sect2Text")
-    current_user.site_id.sect3Title = data.get("sect3Title")
-    current_user.site_id.sect3Text = data.get("sect3Text")
+    if data.get("title").strip() != "":
+        current_user.site_id.title = data.get("title").strip()
+    if data.get("sect1Title").strip() != "":
+        current_user.site_id.sect1Title = data.get("sect1Title").strip()
+    if data.get("sect1Text").strip() != "":
+        current_user.site_id.sect1Text = data.get("sect1Text").strip()
+    if data.get("sect2Title").strip() != "":
+        current_user.site_id.sect2Title = data.get("sect2Title").strip()
+    if data.get("sect2Text").strip() != "":
+        current_user.site_id.sect2Text = data.get("sect2Text").strip()
+    if data.get("sect3Title").strip() != "":
+        current_user.site_id.sect3Title = data.get("sect3Title").strip()
+    if data.get("sect3Text").strip() != "":
+        current_user.site_id.sect3Text = data.get("sect3Text").strip()
 
     db.session.add(current_user)
     db.session.commit()
