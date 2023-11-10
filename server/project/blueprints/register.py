@@ -60,12 +60,10 @@ def make_site():
     # - query the users site - DONE
     # - post the data to database
     # - return message
-    #data = request.get_json()
+    data = request.get_json()
     current_user = User.query.filter_by(username=get_jwt_identity()).first()
 
-    if "files[]" not in request.files:
-        print("no file returned")
-    else:
+    if "files[]" in request.files:
         file = request.files.getlist("files[]")[0]
 
         if file and allowed_file_types(file.filename):
@@ -77,13 +75,13 @@ def make_site():
 
     # current_site = Site.query.filter_by(id=current_user.site_id.id).first()
     
-    # current_site.title = data.get("title")
-    # current_site.sect1Title = data.get("sect1Title")
-    # current_site.sect1Text = data.get("sect1Text")
-    # current_site.sect2Title = data.get("sect2Title")
-    # current_site.sect2Text = data.get("sect2Text")
-    # current_site.sect3Title = data.get("sect3Title")
-    # current_site.sect3Text = data.get("sect3Text")
+    current_user.site_id.title = data.get("title")
+    current_user.site_id.sect1Title = data.get("sect1Title")
+    current_user.site_id.sect1Text = data.get("sect1Text")
+    current_user.site_id.sect2Title = data.get("sect2Title")
+    current_user.site_id.sect2Text = data.get("sect2Text")
+    current_user.site_id.sect3Title = data.get("sect3Title")
+    current_user.site_id.sect3Text = data.get("sect3Text")
 
     #db.session.add(current_site)
     #db.session.commit()
