@@ -19,7 +19,16 @@ def get_site(name):
     
     if selected_user is not None:
 
-        return jsonify({"site_id": selected_user.site_id.sect1title}), 200
+        return jsonify({
+            "username" : selected_user.username,
+            "title" : selected_user.site_id.title,
+            "sect1Title" : selected_user.site_id.sect1Title,
+            "sect1Text" : selected_user.site_id.sect1Text,
+            "sect2Title" : selected_user.site_id.sect2Title,
+            "sect2Text" : selected_user.site_id.sect2Text,
+            "sect3Title" : selected_user.site_id.sect3Title,
+            "sect3Text" : selected_user.site_id.sect3Text
+            }), 200
     
     return jsonify({"message": "User not found"}), 404
 

@@ -36,11 +36,11 @@ def create_user():
         email_in_db = True
     
     if username_in_db and email_in_db:
-        return jsonify({"message": "User already exists"}), 403
+        return jsonify({"error": "User already exists"}), 403
     elif email_in_db:
-        return jsonify({"message": "A user with that email already exists"}), 403
+        return jsonify({"error": "A user with that email already exists"}), 403
     elif username_in_db:
-        return jsonify({"message": "User already exists"}), 403
+        return jsonify({"error": "User already exists"}), 403
 
     # CREATE AND ADD THE NEW USER AND THEN GET THE USER'S ID FOR THE SITE
     new_user = User(data["username"], data["password"], data["email"], None)
@@ -73,8 +73,6 @@ def make_site():
         else:
             return jsonify({"message" : "File type is not allowed"}), 500
 
-    # current_site = Site.query.filter_by(id=current_user.site_id.id).first()
-    
     current_user.site_id.title = data.get("title")
     current_user.site_id.sect1Title = data.get("sect1Title")
     current_user.site_id.sect1Text = data.get("sect1Text")
@@ -83,10 +81,10 @@ def make_site():
     current_user.site_id.sect3Title = data.get("sect3Title")
     current_user.site_id.sect3Text = data.get("sect3Text")
 
-    #db.session.add(current_site)
-    #db.session.commit()
+    db.session.add(current_user)
+    db.session.commit()
 
-    return jsonify({"msg": current_user.id}), 418
+    return jsonify({"message" : "site created"}), 201
 
 @register_bp.get("/activate")
 def activate():
