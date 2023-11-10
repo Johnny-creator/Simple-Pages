@@ -1,3 +1,8 @@
 input {
-    border-radius: 1em;
+  border-radius: 1em;
+}
+
+.invalid-input {
+  background-color: rgb(223, 150, 150);
+  border-color: rgb(223, 150, 150);
 }

@@ -8,6 +8,8 @@ import "./register.css";
 
 const Register = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState(true);
+  const [showPasswords, setShowPasswords] = useState(false);
+  const [message, setMessage] = useState();
 
   const {
     value: userName,
@@ -87,16 +89,17 @@ const Register = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5001/signup", {
+      const response = await fetch("http://localhost:5001/register/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (response.ok) {
-        console.log("Worked");
-      }
+      const parsedResponse = await response.json();
+      setMessage(parsedResponse.message);
     } catch (error) {
-      console.log("There has been an error " + error);
+      console.log("test");
+      const parsedResponse = await response.json();
+      console.log(parsedResponse.error);
     }
 
     resetUserNameInput();
@@ -116,10 +119,10 @@ const Register = () => {
       <form>
         <label> User Name: </label>
         <Input
+          invalid={enteredUserNameIsInvalid ? "invalid-input" : ""}
           type="text"
           name="userName"
           value={userName}
-          holder="User Name: "
           onChange={userNameChangeHandler}
           onBlur={userNameBlurHandler}
         ></Input>
@@ -129,10 +132,10 @@ const Register = () => {
 
         <label> Email: </label>
         <Input
+          invalid={enteredEmailIsInvalid ? "invalid-input" : ""}
           type="text"
           name="email"
           value={email}
-          holder="Email: "
           onChange={emailChangeHandler}
           onBlur={emailBlurHandler}
         ></Input>
@@ -142,10 +145,10 @@ const Register = () => {
 
         <label> Password: </label>
         <Input
-          type="text"
+          invalid={enteredPasswordIsInvalid ? "invalid-input" : ""}
+          type={showPasswords ? "text" : "password"}
           name="password"
           value={password}
-          holder="Password: "
           onChange={passwordChangeHandler}
           onBlur={passwordBlurHandler}
         ></Input>
@@ -155,10 +158,10 @@ const Register = () => {
 
         <label> Confirm Password: </label>
         <Input
-          type="text"
+          invalid={enteredConfirmPasswordIsInvalid ? "invalid-input" : ""}
+          type={showPasswords ? "text" : "password"}
           name="confirmPassword"
           value={confirmPassword}
-          holder="Confirm Password: "
           onChange={confirmPasswordChangeHandler}
           onBlur={confirmPasswordBlurHandler}
         ></Input>
@@ -170,10 +173,22 @@ const Register = () => {
         {!passwordConfirmation && (
           <p className="invalid"> Passwords must match.</p>
         )}
+        <div className="passwordChecker">
+          <label type="check">Show Passwords</label>
+          <input
+            id="check"
+            type="checkbox"
+            value={showPasswords}
+            onChange={() => setShowPasswords((prev) => !prev)}
+          />
+        </div>
+
+        {message && <p className="message">{message}</p>}
 
         <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
           Create User
         </Button>
+
         <Link to="/"> Home</Link>
       </form>
     </main>

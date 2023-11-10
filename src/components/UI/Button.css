@@ -5,7 +5,3 @@ button {
     border-radius: 1em;
     font-family: 'Arial', 'helvetica', 'sans-serif';
 }
-
-button:disabled {
-    background-color: grey !important;
-}
