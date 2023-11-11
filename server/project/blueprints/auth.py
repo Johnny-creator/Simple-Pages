@@ -9,6 +9,12 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.post("/login")
 def login():
+    '''
+    Endpoint to log in a user and pass them a JWT token
+
+    Returns
+        A JSON response with the current username, access token, and refresh token. Or if not successful, a message advising of such.
+    '''
     data = request.get_json()
     
     current_user = User.query.filter_by(username=data.get("username")).first()
@@ -28,14 +34,10 @@ def login():
 @auth_bp.get("/whoami")
 @jwt_required()
 def jwttest():
-    print("works!")
+    '''
+    Endpoint to get the current users name
+
+    Returns
+        JSON object with the current users username
+    '''
     return jsonify({"user_details":{"username":current_user.username, "email": current_user.email}})
-
-
-@auth_bp.get("/get_user/<name>")
-def get_user(name):
-    current_user = User.query.filter_by(username=name).all()[0]
-
-    return jsonify(current_user.username), 418
-
-

@@ -23,6 +23,12 @@ def allowed_file_types(filename):
 
 @register_bp.post("/signup")
 def create_user():
+    '''
+    Endpoint to sign up a new users
+
+    Returns
+        A message if either a user already exists, the email used for signing up is already used, or if user is successfully created
+    '''
     data = request.get_json()
     username_in_db = False
     email_in_db = False
@@ -56,10 +62,12 @@ def create_user():
 @register_bp.post("/make_site")
 @jwt_required()
 def make_site():
-    # TODO
-    # - query the users site - DONE
-    # - post the data to database
-    # - return message
+    '''
+    Endpoint to create or edit a users site. Uploads an image file to the server
+
+    Returns
+        Message saying whether or not the site has been successfully edited
+    '''
     data = request.get_json()
     current_user = User.query.filter_by(username=get_jwt_identity()).first()
 
@@ -95,6 +103,12 @@ def make_site():
 
 @register_bp.get("/activate")
 def activate():
+    '''
+    Endpoint to activate a users account based on the argument that is passed to the URL
+
+    Returns
+        Message confirming activation successful or not
+    '''
     activation_code = request.args.get("token")
     
     user_to_activate = User.query.filter_by(activation_UUID = activation_code).first()
@@ -112,8 +126,3 @@ def activate():
         return jsonify({"message": "User activated"}), 201
 
     return jsonify({"message":"Failed to activate " + user_to_activate.username}), 403
-
-@register_bp.post("/make_site")
-def makesite():
-    data = request.json
-    
