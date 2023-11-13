@@ -26,7 +26,8 @@ def login():
             {
                 "current_user": data.get("username"),
                 "access_token": access_token,
-                "refresh_token": refresh_token
+                "refresh_token": refresh_token,
+                "message": "You have logged in."
             }), 200
 
     return jsonify({"error": "invalid username or password"}), 418
