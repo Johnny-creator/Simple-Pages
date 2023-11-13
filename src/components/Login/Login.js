@@ -8,6 +8,7 @@ import "./login.css";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState();
 
   const {
     value: userName,
@@ -33,7 +34,7 @@ const Login = () => {
     formIsValid = true;
   }
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     if (!enteredUserNameIsValid) {
@@ -44,9 +45,26 @@ const Login = () => {
       return;
     }
 
-    resetUserNameInput();
+    try {
+      const data = { username: userName, password: password };
+      const response = await fetch("http://localhost:5001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    resetPasswordInput();
+      resetUserNameInput();
+
+      resetPasswordInput();
+
+      setMessage(await response.message)
+
+      return message;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
