@@ -84,8 +84,8 @@ const Register = () => {
 
     let data = {
       username: userName,
-      password: password,
       email: email,
+      password: password,
     };
 
     try {
@@ -95,9 +95,13 @@ const Register = () => {
         body: JSON.stringify(data),
       });
       const parsedResponse = await response.json();
-      setMessage(parsedResponse.message);
+      console.log(parsedResponse);
+      if (parsedResponse.message) {
+        setMessage(parsedResponse.message);
+      } else {
+        setMessage(parsedResponse.error);
+      }
     } catch (error) {
-      console.log("test");
       const parsedResponse = await response.json();
       console.log(parsedResponse.error);
     }
