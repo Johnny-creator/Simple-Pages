@@ -55,11 +55,8 @@ const Login = () => {
         body: JSON.stringify(data),
       });
 
-      console.log(response);
-
       const messageReceival = await response.json();
       setMessage(messageReceival.message);
-      console.log(message);
     } catch (error) {
       console.log(error);
     }
