@@ -55,16 +55,18 @@ const Login = () => {
         body: JSON.stringify(data),
       });
 
-      resetUserNameInput();
+      console.log(response);
 
-      resetPasswordInput();
-
-      setMessage(await response.message)
-
-      return message;
+      const messageReceival = await response.json();
+      setMessage(messageReceival.message);
+      console.log(message);
     } catch (error) {
       console.log(error);
     }
+
+    resetUserNameInput();
+
+    resetPasswordInput();
   };
 
   return (
@@ -110,6 +112,7 @@ const Login = () => {
           Login
         </Button>
         <Link to="/"> Home</Link>
+        {message && <p> {message} </p>}
       </form>
     </main>
   );
