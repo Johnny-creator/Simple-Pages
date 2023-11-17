@@ -42,3 +42,20 @@ def jwttest():
         JSON object with the current users username
     '''
     return jsonify({"user_details":{"username":current_user.username, "email": current_user.email}})
+
+####################################
+# TEST FOR LOGGING IN WITH COOKIES #
+####################################
+@auth_bp.post("/login_with_cookies")
+def login_with_cookies():
+    data = request.get_json()
+    
+    current_user = User.query.filter_by(username=data.get("username")).first()
+
+    if check_password_hash(current_user.password, data.get("password")): 
+        response = jsonify({"message": "Login successful"})
+        access_token = create_access_token(identity=data.get("username"))
+        set_access_cookies(response, access_token)
+        return response
+
+    return jsonify({"error": "invalid username or password"}), 418
