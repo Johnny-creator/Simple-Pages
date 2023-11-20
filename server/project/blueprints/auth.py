@@ -7,6 +7,7 @@ from sqlalchemy import text
 
 auth_bp = Blueprint("auth", __name__)
 
+
 @auth_bp.post("/login")
 def login():
     '''
@@ -16,10 +17,10 @@ def login():
         A JSON response with the current username, access token, and refresh token. Or if not successful, a message advising of such.
     '''
     data = request.get_json()
-    
+
     current_user = User.query.filter_by(username=data.get("username")).first()
 
-    if check_password_hash(current_user.password, data.get("password")): 
+    if check_password_hash(current_user.password, data.get("password")):
         access_token = create_access_token(identity=data.get("username"))
         refresh_token = create_refresh_token(identity=data.get("username"))
         return jsonify(
@@ -32,6 +33,7 @@ def login():
 
     return jsonify({"error": "invalid username or password"}), 418
 
+
 @auth_bp.get("/whoami")
 @jwt_required()
 def jwttest():
@@ -41,21 +43,30 @@ def jwttest():
     Returns
         JSON object with the current users username
     '''
-    return jsonify({"user_details":{"username":current_user.username, "email": current_user.email}})
+    return jsonify({"user_details": {"username": current_user.username, "email": current_user.email}})
 
 ####################################
 # TEST FOR LOGGING IN WITH COOKIES #
 ####################################
+
+
 @auth_bp.post("/login_with_cookies")
 def login_with_cookies():
     data = request.get_json()
-    
+
     current_user = User.query.filter_by(username=data.get("username")).first()
 
-    if check_password_hash(current_user.password, data.get("password")): 
+    if check_password_hash(current_user.password, data.get("password")):
         response = jsonify({"message": "Login successful"})
         access_token = create_access_token(identity=data.get("username"))
         set_access_cookies(response, access_token)
         return response
 
     return jsonify({"error": "invalid username or password"}), 418
+
+
+@auth_bp.get("/get_cookie")
+def get_cookies():
+    cookie = request.cookies.get('access_token_cookie')
+
+    return cookie
