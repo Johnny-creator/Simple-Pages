@@ -24,5 +24,5 @@ db = SQLAlchemy(app)
 # Add on migration capabilities in order to run terminal commands
 Migrate(app,db)
 
-# JWT MANAGER!
+# JWT MANAGER
 jwt = JWTManager(app)
