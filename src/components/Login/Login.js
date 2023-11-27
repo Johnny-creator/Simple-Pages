@@ -6,7 +6,7 @@ import useInput from "../../hooks/use-input";
 
 import "./login.css";
 
-const Login = () => {
+const Login = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState();
 
@@ -48,7 +48,7 @@ const Login = () => {
     try {
       const data = { username: userName, password: password };
       const response = await fetch(
-        "http://localhost:5001/auth/login_with_cookies",
+        "http://localhost:5001/auth/login",
         {
           method: "POST",
           headers: {
@@ -61,6 +61,13 @@ const Login = () => {
       const messageReceival = await response.json();
       console.log(messageReceival);
       setMessage(messageReceival.message);
+      
+      if (response.ok) {
+        console.log("Response okay");
+        props.retrieveStatus(true);
+      } else {
+        console.log("Response not okay");
+      }
     } catch (error) {
       console.log(error);
     }
