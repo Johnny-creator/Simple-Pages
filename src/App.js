@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Header from "./components/UI/Header";
 import Home from "./components/Home/Home";
@@ -18,6 +18,7 @@ const App = () => {
   const [style, setStyle] = useState(() => {
     return localStorage.getItem("Theme") === "true" ? true : false;
   });
+  const [status, setStatus] = useState();
 
   const onClickHandler = (event) => {
     event.preventDefault();
@@ -25,17 +26,36 @@ const App = () => {
     localStorage.setItem("Theme", !style);
   };
 
+  const retrieveStatus = (status) => {
+    setStatus(status);
+  };
+
+  const logOutHandler = () => {
+    setStatus(false);
+  };
+
   return (
     <BrowserRouter>
       <div
         className={localStorage.getItem("Theme") === "true" ? "light" : "dark"}
       >
-        <Header onClick={onClickHandler} />
+        <Header
+          onClick={onClickHandler}
+          useStatus={status}
+          logOutHandler={logOutHandler}
+        />
         <Routes>
           <Route path="*" element={<Error />} />
-          <Route index path="/" element={<Home />} />
+          <Route
+            index
+            path="/"
+            element={<Home useStatus={status} logOutHandler={logOutHandler} />}
+          />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={<Login retrieveStatus={retrieveStatus} />}
+          />
           <Route path="/create" element={<Create />} />
           <Route path="/sites" element={<SiteList />} />
           <Route path="/result" element={<Result />} />
