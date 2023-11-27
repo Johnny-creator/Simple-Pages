@@ -55,7 +55,7 @@ def login():
     current_user = User.query.filter_by(username=data.get("username")).first()
 
     if check_password_hash(current_user.password, data.get("password")):
-        response = jsonify({"message": "Login successful"})
+        response = jsonify({"message": "Login successful", "status": True})
         access_token = create_access_token(identity=data.get("username"))
         set_access_cookies(response, access_token)
         return response
