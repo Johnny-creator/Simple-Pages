@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "../UI/Button";
 import "./home.css";
 
-const Home = () => {
+const Home = (props) => {
   const [animate, setAnimate] = useState();
 
   useEffect(() => {
@@ -28,9 +28,14 @@ const Home = () => {
         </div>
 
         <div className="box">
-          <Link to="/login">
-            <Button type="button"> Log In </Button>
-          </Link>
+          {props.useStatus ? (
+            <Button type="button" onClick={props.logOutHandler}> Log Out </Button>
+          ) : (
+            <Link to="/login">
+              <Button type="button"> Log In </Button>
+            </Link>
+          )}
+
           <p> Login to view and save your pages </p>
         </div>
 
