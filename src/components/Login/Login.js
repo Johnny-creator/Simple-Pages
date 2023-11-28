@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { SpinnerCircularFixed } from "spinners-react";
 import Input from "../Input/Input";
 import Button from "../UI/Button";
 import useInput from "../../hooks/use-input";
@@ -9,6 +10,7 @@ import "./login.css";
 const Login = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState();
+  const [loading, setLoading] = useState();
 
   const {
     value: userName,
@@ -46,22 +48,21 @@ const Login = (props) => {
     }
 
     try {
+      setLoading(true);
       const data = { username: userName, password: password };
-      const response = await fetch(
-        "http://localhost:5001/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("http://localhost:5001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
+      setLoading(false);
       const messageReceival = await response.json();
       console.log(messageReceival);
       setMessage(messageReceival.message);
-      
+
       if (response.ok) {
         console.log("Response okay");
         props.retrieveStatus(true);
@@ -116,9 +117,20 @@ const Login = (props) => {
           />
         </div>
 
-        <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
-          Login
-        </Button>
+        {loading ? (
+          <SpinnerCircularFixed
+            size={50}
+            thickness={100}
+            speed={100}
+            color="rgba(255, 255, 255, 1)"
+            secondaryColor="rgba(0, 0, 0, 0.44)"
+          />
+        ) : (
+          <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
+            Login
+          </Button>
+        )}
+
         <Link to="/"> Home</Link>
         {message && <p> {message} </p>}
       </form>
