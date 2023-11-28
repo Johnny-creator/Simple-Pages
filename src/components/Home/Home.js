@@ -30,10 +30,10 @@ const Home = (props) => {
         <div className="box">
           {props.useStatus ? (
             <>
-            <Button type="button" onClick={props.logOutHandler}>
-              Log Out
-            </Button>
-            <p> Click above to log out</p>
+              <Button type="button" onClick={props.logOutHandler}>
+                Log Out
+              </Button>
+              <p> Click above to log out</p>
             </>
           ) : (
             <>
