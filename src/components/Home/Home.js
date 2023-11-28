@@ -29,14 +29,20 @@ const Home = (props) => {
 
         <div className="box">
           {props.useStatus ? (
-            <Button type="button" onClick={props.logOutHandler}> Log Out </Button>
+            <>
+            <Button type="button" onClick={props.logOutHandler}>
+              Log Out
+            </Button>
+            <p> Click above to log out</p>
+            </>
           ) : (
-            <Link to="/login">
-              <Button type="button"> Log In </Button>
-            </Link>
+            <>
+              <Link to="/login">
+                <Button type="button"> Log In </Button>
+              </Link>
+              <p> Login to view and save your pages</p>
+            </>
           )}
-
-          <p> Login to view and save your pages </p>
         </div>
 
         <div className="box">
