@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { SpinnerCircularFixed } from "spinners-react";
 import Input from "../Input/Input";
 import Button from "../UI/Button";
 import useInput from "../../hooks/use-input";
@@ -10,6 +11,7 @@ const Register = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState(true);
   const [showPasswords, setShowPasswords] = useState(false);
   const [message, setMessage] = useState();
+  const [loading, setLoading] = useState();
 
   const {
     value: userName,
@@ -89,6 +91,7 @@ const Register = () => {
     };
 
     try {
+      setLoading(true);
       const response = await fetch("http://localhost:5001/register/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,6 +108,8 @@ const Register = () => {
       const parsedResponse = await response.json();
       console.log(parsedResponse.error);
     }
+
+    setLoading(false);
 
     resetUserNameInput();
 
@@ -189,9 +194,19 @@ const Register = () => {
 
         {message && <p className="message">{message}</p>}
 
-        <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
-          Create User
-        </Button>
+        {loading ? (
+          <SpinnerCircularFixed
+            size={50}
+            thickness={100}
+            speed={100}
+            color="rgba(255, 255, 255, 1)"
+            secondaryColor="rgba(0, 0, 0, 0.44)"
+          />
+        ) : (
+          <Button onClick={submitHandler} disabled={!formIsValid} type="submit">
+            Create User
+          </Button>
+        )}
 
         <Link to="/"> Home</Link>
       </form>
