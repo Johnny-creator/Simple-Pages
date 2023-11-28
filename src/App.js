@@ -30,7 +30,19 @@ const App = () => {
     setStatus(status);
   };
 
-  const logOutHandler = () => {
+  const logOutHandler = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/auth/logout", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+      });
+
+      const statusMessage = await response.json();
+      console.log(statusMessage);
+    } catch (err) {
+      console.error(err);
+    }
+
     setStatus(false);
   };
 
@@ -54,7 +66,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route
             path="/login"
-            element={<Login retrieveStatus={retrieveStatus} />}
+            element={status ? <Navigate to="/" /> : <Login retrieveStatus={retrieveStatus} />}
           />
           <Route path="/create" element={<Create />} />
           <Route path="/sites" element={<SiteList />} />
