@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, Text, BigInteger, Column, Boolean
+from sqlalchemy import ForeignKey, Text, BigInteger, Column, Boolean, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from project import db
@@ -38,13 +38,17 @@ class Site(db.Model):
 
     id = Column(BigInteger, primary_key=True)
     user_id = Column(BigInteger, ForeignKey('users.id'))
-    title = Column(Text)
-    sect1Title = Column(Text)
+    title = Column(String(80))
+    sect1Title = Column(String(80))
     sect1Text = Column(Text)
-    sect2Title = Column(Text)
+    sect2Title = Column(String(80))
     sect2Text = Column(Text)
-    sect3Title = Column(Text)
+    sect3Title = Column(String(80))
     sect3Text = Column(Text)
+    sect4Title = Column(String(80))
+    sect4Text = Column(Text)
+    sect5Title = Column(String(80))
+    sect5Text = Column(Text)
 
     def __init__(self, user_id):
         self.user_id = user_id
