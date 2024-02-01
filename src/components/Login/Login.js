@@ -60,11 +60,9 @@ const Login = (props) => {
 
       setLoading(false);
       const messageReceival = await response.json();
-      console.log(messageReceival);
       setMessage(messageReceival.message);
 
       if (response.ok) {
-        console.log("Response okay");
         props.retrieveStatus(true);
       } else {
         console.log("Response not okay");

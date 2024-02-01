@@ -45,8 +45,13 @@ const Create = () => {
           <textarea name="fourthText"></textarea>
         </div>
 
-        <Input type="file"></Input>
-        <Button type="submit" onClick={submitHandler}> Create Page </Button>
+        <div className="file">
+          <label>Select Image: </label>
+          <Input type="file"></Input>
+        </div>
+        <Button type="submit" onClick={submitHandler}>
+          Create Page
+        </Button>
         <Link to="/"> Home</Link>
       </form>
     </main>

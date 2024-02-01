@@ -9,3 +9,8 @@
     width: 50%;
     resize: none;
 }
+
+.file input {
+    background-color: transparent !important;
+    border-radius: 0;
+}

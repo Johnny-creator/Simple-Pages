@@ -98,7 +98,6 @@ const Register = () => {
         body: JSON.stringify(data),
       });
       const parsedResponse = await response.json();
-      console.log(parsedResponse);
       if (parsedResponse.message) {
         setMessage(parsedResponse.message);
       } else {

@@ -38,7 +38,6 @@ const App = () => {
       });
 
       const statusMessage = await response.json();
-      console.log(statusMessage);
     } catch (err) {
       console.error(err);
     }
