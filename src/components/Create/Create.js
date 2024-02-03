@@ -40,9 +40,6 @@ const Create = () => {
 
           <label>Third Text</label>
           <textarea name="thirdText"></textarea>
-
-          <label>Fourth Text</label>
-          <textarea name="fourthText"></textarea>
         </div>
 
         <div className="file">
